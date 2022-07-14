@@ -1,0 +1,61 @@
+version: "3.8"
+
+services:
+  db:
+    container_name: db
+    image: postgres:14.1-alpine
+    env_file:
+      - ./.env
+    volumes:
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - app-db-data:/var/lib/postgresql/data
+    ports:
+      - "8088:5432"
+    networks:
+      - app
+    restart: unless-stopped
+
+  backend:
+    container_name: backend
+    build: ./backend
+    volumes:
+      - ./data:/workspace/data/
+    env_file:
+      - ./.env
+    depends_on:
+      - db
+    networks:
+      - app
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+
+  api:
+    container_name: api
+    build: ./app
+    env_file:
+      - ./.env
+    depends_on:
+      - db
+      - backend
+    networks:
+      - app
+    ports:
+      - "8089:8080"
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+
+networks:
+  app:
+    driver: bridge
+
+volumes:
+  app-db-data:
+    driver: local
