@@ -5,7 +5,7 @@ provider "google" {
 
 terraform {
   backend "gcs" {
-    bucket = "vapaus-terraform-bucket"
+    bucket = "vapaus-terraform-staging"
     prefix = "terraform/state"
   }
 }
