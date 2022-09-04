@@ -1,0 +1,19 @@
+variable "project_id" {
+  type        = string
+  description = "vapaus-staging"
+}
+
+variable "region" {
+  type    = string
+  default = "europe-north1"
+}
+
+variable "terraform_bucket" {
+  type    = string
+  default = "vapaus-terraform-bucket"
+}
+
+variable "terraform_bucket_state_path" {
+  type    = string
+  default = "terraform/state"
+}
