@@ -1,6 +1,6 @@
 variable "project_id" {
   type        = string
-  description = "vapaus-staging"
+  description = "development-359007"
 }
 
 variable "region" {
